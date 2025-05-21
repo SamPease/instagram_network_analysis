@@ -1,0 +1,226 @@
+{
+  "user0": [
+    "user1",
+    "user2",
+    "user3",
+    "user4",
+    "user5",
+    "user6",
+    "user7",
+    "user8",
+    "user10",
+    "user11",
+    "user12",
+    "user13",
+    "user17",
+    "user19",
+    "user21",
+    "user31"
+  ],
+  "user1": [
+    "user0",
+    "user2",
+    "user3",
+    "user7",
+    "user13",
+    "user17",
+    "user19",
+    "user21",
+    "user30"
+  ],
+  "user10": [
+    "user0",
+    "user4",
+    "user5"
+  ],
+  "user11": [
+    "user0"
+  ],
+  "user12": [
+    "user0",
+    "user3"
+  ],
+  "user13": [
+    "user0",
+    "user1",
+    "user2",
+    "user3",
+    "user33"
+  ],
+  "user14": [
+    "user32",
+    "user33"
+  ],
+  "user15": [
+    "user32",
+    "user33"
+  ],
+  "user16": [
+    "user5",
+    "user6"
+  ],
+  "user17": [
+    "user0",
+    "user1"
+  ],
+  "user18": [
+    "user32",
+    "user33"
+  ],
+  "user19": [
+    "user0",
+    "user1",
+    "user33"
+  ],
+  "user2": [
+    "user0",
+    "user1",
+    "user3",
+    "user7",
+    "user8",
+    "user9",
+    "user13",
+    "user27",
+    "user28",
+    "user32"
+  ],
+  "user20": [
+    "user32",
+    "user33"
+  ],
+  "user21": [
+    "user0",
+    "user1"
+  ],
+  "user22": [
+    "user32",
+    "user33"
+  ],
+  "user23": [
+    "user25",
+    "user27",
+    "user29",
+    "user32",
+    "user33"
+  ],
+  "user24": [
+    "user25",
+    "user27",
+    "user31"
+  ],
+  "user25": [
+    "user23",
+    "user24",
+    "user31"
+  ],
+  "user26": [
+    "user29",
+    "user33"
+  ],
+  "user27": [
+    "user2",
+    "user23",
+    "user24",
+    "user33"
+  ],
+  "user28": [
+    "user2",
+    "user31",
+    "user33"
+  ],
+  "user29": [
+    "user23",
+    "user26",
+    "user32",
+    "user33"
+  ],
+  "user3": [
+    "user0",
+    "user1",
+    "user2",
+    "user7",
+    "user12",
+    "user13"
+  ],
+  "user30": [
+    "user1",
+    "user8",
+    "user32",
+    "user33"
+  ],
+  "user31": [
+    "user0",
+    "user24",
+    "user25",
+    "user28",
+    "user32",
+    "user33"
+  ],
+  "user32": [
+    "user2",
+    "user8",
+    "user14",
+    "user15",
+    "user18",
+    "user20",
+    "user22",
+    "user23",
+    "user29",
+    "user30",
+    "user31",
+    "user33"
+  ],
+  "user33": [
+    "user8",
+    "user9",
+    "user13",
+    "user14",
+    "user15",
+    "user18",
+    "user19",
+    "user20",
+    "user22",
+    "user23",
+    "user26",
+    "user27",
+    "user28",
+    "user29",
+    "user30",
+    "user31",
+    "user32"
+  ],
+  "user4": [
+    "user0",
+    "user6",
+    "user10"
+  ],
+  "user5": [
+    "user0",
+    "user6",
+    "user10",
+    "user16"
+  ],
+  "user6": [
+    "user0",
+    "user4",
+    "user5",
+    "user16"
+  ],
+  "user7": [
+    "user0",
+    "user1",
+    "user2",
+    "user3"
+  ],
+  "user8": [
+    "user0",
+    "user2",
+    "user30",
+    "user32",
+    "user33"
+  ],
+  "user9": [
+    "user2",
+    "user33"
+  ]
+}
