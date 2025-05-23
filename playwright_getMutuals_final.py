@@ -26,20 +26,31 @@ def scrape_following(page, username, valid_usernames):
     url = f"https://www.instagram.com/{username}/"
     page.goto(url, timeout=60000)
     try:
-        page.get_by_role("link", name="following").click()
-        page.wait_for_selector("//div[@role='dialog']//a", timeout=10000)
+        page.locator("a[href$='/following/']").click()
+        page.wait_for_selector("div[role='dialog']", timeout=10000)  # Wait for the follower box
     except Exception:
         print(f"[!] Could not access following list for {username}")
         return []
 
-    scroll_area = page.locator("div[role='dialog'] ul")
+    # Updated selector to reliably target scrollable container inside the modal
+    page.wait_for_selector("div[role='dialog']", timeout=10000)
+    scroll_area = page.locator("div[role='dialog'] div[style*='overflow']")
+    if not scroll_area.is_visible():
+        print(f"[!] No following list visible for {username}")
+        return []  # Use the class to locate the scrollable area
     seen = set()
     retries = 3  # Number of retries for scrolling
 
     for _ in range(retries):
         prev_count = len(seen)
         while True:
-            page.mouse.wheel(0, 5000)
+            # Scroll the follower list by evaluating JavaScript to scroll the correct element
+            page.evaluate(
+                """(scrollArea) => {
+                    scrollArea.scrollTop = scrollArea.scrollHeight;
+                }""",
+                scroll_area,
+            )
             time.sleep(1.5)
             handles = scroll_area.locator("a[href*='/']")
             current = handles.evaluate_all("els => els.map(el => el.getAttribute('href').split('/')[1])")
