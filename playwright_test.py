@@ -1,80 +1,70 @@
+
 import time
+import pandas as pd
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-TARGET_USER = "abigail.pease"  # Replace with the target username
+TARGET_USER = "roux.blue.stagram"  # Replace with the target username
 
 def main():
+    following = set()
+
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=False)
         context = browser.new_context(storage_state="auth.json")
         page = context.new_page()
 
-        # Go to target user profile
+        # Navigate to user's profile
         page.goto(f"https://www.instagram.com/{TARGET_USER}/")
         page.wait_for_selector("a[href$='/following/']")
         page.locator("a[href$='/following/']").first.click()
 
-        # Wait for dialog and initial user content
+        # Wait for modal
         page.wait_for_selector("div[role='dialog']", timeout=10000)
-        page.wait_for_selector("div[role='dialog'] a[href^='/']", timeout=10000)
-        print("✅ Dialog opened and list loaded")
+        print("✅ Dialog opened")
 
-        # Locate scrollable content container for username extraction
-        scroll_area = page.locator("div[role='dialog'] div[class*='xyi19xy'] div[style*='overflow']").first
-
-        usernames = set()
-        prev_count = 0
-        same_count_rounds = 0
-
-        # Focus and scroll in the visual center of the modal
         modal = page.locator("div[role='dialog']").first
-        box = modal.bounding_box()
-        x_center = box["x"] + box["width"] / 2
-        y_center = box["y"] + box["height"] / 2
+        scroll_area = modal.locator("div[style*='overflow']").first
 
-        print("⏳ Scrolling to load full list...")
-        while True:
+        prev_count = -1
+        stable_rounds = 0
+
+        print("⏳ Scrolling and checking for following...")
+        while stable_rounds < 3:
+            # Scroll the modal
+            box = modal.bounding_box()
+            x_center = box["x"] + box["width"] / 2
+            y_center = box["y"] + box["height"] / 2
             page.mouse.move(x_center, y_center)
             page.mouse.wheel(0, 600)
-            time.sleep(2.0)
+            time.sleep(2.5)
 
-            # Extract usernames
-            links = scroll_area.locator("a[href^='/']")
-            for j in range(links.count()):
-                href = links.nth(j).get_attribute("href")
-                if (
-                    href
-                    and href.count("/") == 2
-                    and not any(x in href for x in ["stories", "reels", "p"])
-                    and not href.strip("/").startswith("explore")
-                ):
-                    username = href.strip("/").split("/")[0]
-                    usernames.add(username)
+            # Search for usernames
+            links = modal.locator("a[href^='/']")
+            elements = links.element_handles()
 
-            print(f"🔎 Found {len(usernames)} usernames so far...")
+            for handle in elements:
+                try:
+                    href = handle.get_attribute("href")
+                    if href:
+                        username = href.strip("/").split("/")[0]
+                        # if username in mutuals:
+                        following.add(username)
+                except:
+                    continue
 
-            if len(usernames) == prev_count:
-                same_count_rounds += 1
+            if len(following) == prev_count:
+                stable_rounds += 1
             else:
-                same_count_rounds = 0
+                stable_rounds = 0
+                prev_count = len(following)
 
-            prev_count = len(usernames)
+        print(f"✅ Found {len(following)} usernames {TARGET_USER} is following")
+        print(sorted(following))
 
-            if same_count_rounds >= 5:
-                print("✅ No new users loaded after 5 scrolls. Done.")
-                break
-
-        print(f"✅ Final count: {len(usernames)} usernames:")
-        for u in sorted(usernames):
-            print(" -", u)
-
-        import json
-        with open("usernames.json", "w", encoding="utf-8") as f:
-            json.dump(sorted(usernames), f, indent=2)
-        print("💾 Saved to usernames.json")
-
-        browser.close()
+        with open(f"{TARGET_USER}_mutuals_found.txt", "w") as f:
+            for u in sorted(following):
+                f.write(u + "\n")
 
 if __name__ == "__main__":
     main()
