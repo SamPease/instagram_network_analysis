@@ -1,3 +1,4 @@
+import random
 import time
 import csv
 import json
@@ -7,6 +8,22 @@ from tqdm import tqdm
 
 MUTUALS_FILE = "mutuals_from_html.csv"
 GRAPH_FILE = "following_graph.json"
+def random_mouse_move(page):
+    width = page.viewport_size['width'] if page.viewport_size else 1280
+    height = page.viewport_size['height'] if page.viewport_size else 720
+    for _ in range(random.randint(2, 5)):
+        x = random.randint(0, width)
+        y = random.randint(0, height)
+        page.mouse.move(x, y, steps=random.randint(5, 20))
+        time.sleep(random.uniform(0.1, 0.5))
+
+def random_delay(min_s=1.5, max_s=4.0):
+    time.sleep(random.uniform(min_s, max_s))
+
+def backoff_delay(attempt):
+    base = 2
+    time.sleep(base ** attempt + random.uniform(0, 1))
+
 SCROLL_DELAY = 2.5
 SCROLL_DELTA = 600
 STOP_AFTER_UNCHANGED_ROUNDS = 10
@@ -29,15 +46,19 @@ def scrape_following(page, target_user):
     # Go to target user profile
     for attempt in range(3):
         try:
+            random_delay(2, 5)  # Simulate user pausing before navigating
+            random_mouse_move(page)  # Simulate cursor movement
             page.goto(f"https://www.instagram.com/{target_user}/", timeout=15000)
             break  # success
         except Exception as e:
             print(f"⚠️ Retry {attempt+1} for {target_user}: {e}")
-            time.sleep(5)
+            backoff_delay(attempt)
     else:
         raise Exception(f"Failed to load profile after retries: {target_user}")
 
     page.wait_for_selector("a[href$='/following/']")
+    random_mouse_move(page)  # Simulate hover behavior
+    random_delay(1, 3)  # Pause before clicking following list
     page.locator("a[href$='/following/']").first.click()
 
     # Wait for dialog and initial user content
@@ -60,6 +81,7 @@ def scrape_following(page, target_user):
         x_center = box["x"] + box["width"] / 2
         y_center = box["y"] + box["height"] / 2
         page.mouse.move(x_center, y_center)
+        random_delay(0.5, 1.2)  # Simulate human scroll timing
         page.mouse.wheel(0, 600)
         time.sleep(2.5)
 
