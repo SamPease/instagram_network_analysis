@@ -81,6 +81,7 @@ def scrape_following(page, target_user):
         x_center = box["x"] + box["width"] / 2
         y_center = box["y"] + box["height"] / 2
         page.mouse.move(x_center, y_center)
+        # random_mouse_move(page)
         random_delay(0.5, 1.2)  # Simulate human scroll timing
         page.mouse.wheel(0, 600)
         time.sleep(2.5)
@@ -106,6 +107,8 @@ def scrape_following(page, target_user):
             prev_count = len(usernames)
 
     print(f"✅ Found {len(usernames)} usernames {target_user} is following")
+    if len(usernames) <=12:
+        raise Exception(f"Found too few usernames ({len(usernames)}) for {target_user}. Check the profile or your connection.")
     return(sorted(usernames))
 
 def main():
