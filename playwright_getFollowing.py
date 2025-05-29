@@ -68,7 +68,6 @@ def scrape_following(page, target_user):
 
     # Locate scrollable content container for username extraction
     modal = page.locator("div[role='dialog']").first
-    scroll_area = modal.locator("div[style*='overflow']").first
 
     usernames = set()
     prev_count = -1

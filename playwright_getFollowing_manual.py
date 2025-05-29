@@ -51,9 +51,6 @@ def scrape_following(page, target_user):
     else:
         raise Exception(f"Failed to load profile after retries: {target_user}")
 
-
-
-
     usernames = set()
     prev_count = -1
     stable_rounds = 0
