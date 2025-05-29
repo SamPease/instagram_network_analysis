@@ -130,7 +130,7 @@ def main():
         for user in tqdm(users_to_check):
             user_count += 1
             if user_count % 10 == 0:
-                print(f"🔄 Processed {user_count} users so far...")
+                print(f"🔄 Processed {user_count} users so far, sleeping for an hour")
                 time.sleep(3600)  # Pause every 10 users for an hour to avoid rate limits
             try:
                 print(f"🔍 Checking {user}...")
