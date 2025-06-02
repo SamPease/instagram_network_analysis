@@ -1,0 +1,41 @@
+#Script to remove some users from the graph so they can be rescraped later. necessary bc I got 7 new followeres and want to know who follows them
+#Assumption is that the only people that follow these 7  users are among all the people the 7 of them collectively follow. Which may not be true, but I didn't want to code something more robust
+
+
+
+
+import json
+
+# Load JSON data
+with open("mutuals_graph.json", "r") as f:
+    graph = json.load(f)
+
+# Usernames whose children we're collecting
+usernames = [
+    "mafeg95",
+    "ad_deca",
+    "wannabeanya",
+    "reb_dav",
+    "pixipeachh",
+    "beeeef.stew",
+    "alexisreape"
+]
+
+# Collect all children of the 7 entries
+children_to_remove = set()
+for user in usernames:
+    children = graph.get(user, [])
+    children_to_remove.update(children)
+
+# Filter out parents whose name appears in that set
+filtered_graph = {
+    parent: children
+    for parent, children in graph.items()
+    if parent not in children_to_remove
+}
+
+# Save result
+with open("mutuals_graph_filtered.json", "w") as f:
+    json.dump(filtered_graph, f, indent=2)
+
+print(f"Removed {len(graph) - len(filtered_graph)} entries. Saved to 'mutuals_graph_filtered.json'.")
