@@ -27,7 +27,7 @@ def backoff_delay(attempt):
 
 SCROLL_DELAY = 2.5
 SCROLL_DELTA = 600
-STOP_AFTER_UNCHANGED_ROUNDS = 5
+STOP_AFTER_UNCHANGED_ROUNDS = 10
 
 def load_mutuals():
     with open(MUTUALS_FILE, newline='', encoding='utf-8') as f:
