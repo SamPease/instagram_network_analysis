@@ -12,6 +12,42 @@ This project explores the structure of my Instagram mutual-follow network using 
 - **Graph Machine Learning**: Used PyTorch Geometric to train simple GNNs on the graph to predict connections and explore embeddings.
 - **Visualization**: Created an interactive PyVis network that highlights structural features and community groupings.
 
+## Reproducible files (minimal set)
+
+The repository currently contains the minimal files you need to reproduce the final analysis in these exact locations:
+
+- `playwright_saveLogin.py` — Run this first to create a saved session (`auth.json`). Location: `/playwright_saveLogin.py` (repo root).
+- `playwright_getMutuals.py` — Main data collection script: reads a CSV of mutuals and writes a graph JSON. Location: `/playwright_getMutuals.py` (repo root).
+- `csvs/mutuals.csv` — Input CSV listing the mutual accounts to inspect. Location: `/csvs/mutuals.csv`.
+- `graphs/mutuals_graph.json` — Output graph JSON produced by `playwright_getMutuals.py`. Location: `/graphs/mutuals_graph.json`.
+- `analysis.ipynb` — Notebook that loads the graph JSON, runs analysis, and writes the interactive HTML visualization (this used to be `graph_vis3.ipynb`). Location: `/analysis.ipynb` (repo root).
+- `requirements.txt` — Python dependencies used to reproduce the environment. Location: `/requirements.txt` (repo root).
+- `auth.json` — Saved session/login file created by `playwright_saveLogin.py`. If present, location: `/auth.json` (repo root). Treat it as a secret; add it to `.gitignore` or move it to `secrets/` if you plan to commit the repo.
+
+If you've archived exploratory files into `archive/`, that's fine — just make sure the scripts above remain at these locations or update `analysis.ipynb` to point at the new paths.
+
+### Quick run-order (zsh)
+
+Run these from the repo root (paths are exact as listed above):
+
+```bash
+# 1) create and activate a venv and install requirements
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+
+# 2) save login/session (creates auth.json)
+python3 playwright_saveLogin.py
+
+# 3) create graph JSON from mutuals CSV
+python3 playwright_getMutuals.py csvs/mutuals.csv --output graphs/mutuals_graph.json
+
+# 4) open `analysis.ipynb` and run the cells that load `graphs/mutuals_graph.json`
+```
+
+Notes
+- If `analysis.ipynb` includes hard-coded relative paths, open it and update them to the exact paths above.
+- Add `auth.json`, `csvs/large_scrapes/`, and `archive/` to `.gitignore` if you don't want to track them in git.
+
 ## Technical Highlights
 
 - GNNs implemented with PyTorch Geometric

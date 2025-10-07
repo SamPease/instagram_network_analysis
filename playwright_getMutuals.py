@@ -6,8 +6,8 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 from tqdm import tqdm
 
-MUTUALS_FILE = "austin_mutuals.csv"
-GRAPH_FILE = "austin_mutuals_graph.json"
+MUTUALS_FILE = "mutuals.csv"
+GRAPH_FILE = "mutuals_graph.json"
 
 def random_mouse_move(page):
     width = page.viewport_size['width'] if page.viewport_size else 1280

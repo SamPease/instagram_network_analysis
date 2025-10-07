@@ -1,3 +1,4 @@
 .venv/*
-followers_files/*
-following_files/*
+archive/followers_files/*
+archive/following_files/*
+auth.json
