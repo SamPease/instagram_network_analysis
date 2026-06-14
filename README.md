@@ -63,7 +63,7 @@ All analysis can be found in [`graph_vis3.ipynb`](https://github.com/SamPease/in
 ## Blog Post
 
 A full write-up of this project, with visuals and explanations, is available here:  
-👉 [Blog: Instagram Network Analysis](https://sampease.github.io/instagram-network.html)
+[Blog: Instagram Network Analysis](https://sampease.github.io/project-writeups/instagram-network/)
 
 ## Inspiration
 
